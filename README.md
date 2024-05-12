@@ -120,6 +120,9 @@ For a real-world example, have a look at my WinGet package updater repository: [
 - `custom-fork-owner`: The owner of the `winget-pkgs` repo fork to use. If not specified, the owner of the repository where the action is used will be used.
   - **Required**: ❌
   - **Example**: `michidk`
+- `submit`: Specify whether the pull request should be submitted.
+  - **Required**: ❌
+  - **Default**: true
 
 <h2> 🚀 Integrating with <a href="https://github.com/russellbanks/Komac"> <img src="https://rawcdn.githack.com/michidk/winget-updater/7ef56d9c40feb29e1592c0bf6c65eb1af3e77d4e/.github/images/komac-logo.svg" height="24px" style="vertical-align:bottom" alt="Komac logo" /> </a></h2>
 
