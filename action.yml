@@ -25,6 +25,10 @@ inputs:
   custom-fork-owner:
     description: 'Custom winget-pkgs fork owner'
     required: false
+  submit:
+    description: 'Decide if Pull Request should be submitted'
+    required: false
+    default: true
 
 runs:
   using: "composite"
@@ -77,4 +81,4 @@ runs:
         custom-fork-owner: ${{ inputs.custom-fork-owner }}
         custom-tool: WinGet Updater
         custom-tool-url: "https://github.com/michidk/winget-updater"
-        args: update --identifier ${{ inputs.identifier }} --version ${{ steps.latest_release.outputs.result }} --urls $FINAL_URL --submit --token ${{ inputs.komac-token }}
+        args: update --identifier ${{ inputs.identifier }} --version ${{ steps.latest_release.outputs.result }} --urls $FINAL_URL ${{ inputs.submit == true && '--submit' }} --token ${{ inputs.komac-token }}
