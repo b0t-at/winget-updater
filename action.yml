@@ -81,4 +81,4 @@ runs:
         custom-fork-owner: ${{ inputs.custom-fork-owner }}
         custom-tool: WinGet Updater
         custom-tool-url: "https://github.com/michidk/winget-updater"
-        args: update --identifier ${{ inputs.identifier }} --version ${{ steps.latest_release.outputs.result }} --urls $FINAL_URL ${{ inputs.submit == 'true' && '--submit' || '' }} --token ${{ inputs.komac-token }}
+        args: update --version ${{ steps.latest_release.outputs.result }} --urls $FINAL_URL ${{ inputs.submit == 'true' && '--submit' || '' }} --token ${{ inputs.komac-token }} ${{ inputs.identifier }}
