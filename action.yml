@@ -29,6 +29,10 @@ inputs:
     description: 'Decide if Pull Request should be submitted'
     required: false
     default: 'true'
+  pre-release:
+    description: 'Decide if pre-releases should be considered'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -55,11 +59,23 @@ runs:
         script: |
           const [owner, repo] = '${{ inputs.repo }}'.split('/');
           try {
-            const { data } = await github.rest.repos.getLatestRelease({ owner, repo });
-            const tagName = data.tag_name.startsWith('v') ? data.tag_name.substring(1) : data.tag_name;
-            return tagName;
+            if('${{ inputs.pre-release }}' == 'true') {
+              console.log('Fetching pre-release');
+              const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases`);
+              const releases = await res.json();
+              const preRelease = releases.filter(release => release.prerelease)[0];
+              const tagNameRaw = preRelease ? preRelease.tag_name : null;
+              const tagName = tagNameRaw.startsWith('v') ? tagNameRaw.substring(1) : tagNameRaw;
+              return tagName;
+            } else {
+              console.log('Fetching release');
+              let { data } = await github.rest.repos.getLatestRelease({ owner, repo });
+              const tagName = data.tag_name.startsWith('v') ? data.tag_name.substring(1) : data.tag_name;
+              return tagName;
+            } 
           } catch (error) {
             core.setFailed(`Failed to get latest release for repo: ${owner}/${repo}`);
+            console.error(error);
             process.exit(1);
           }
 
