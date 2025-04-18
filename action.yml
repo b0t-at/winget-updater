@@ -65,12 +65,12 @@ runs:
               const releases = await res.json();
               const preRelease = releases.filter(release => release.prerelease)[0];
               const tagNameRaw = preRelease ? preRelease.tag_name : null;
-              const tagName = tagNameRaw.startsWith('v') ? tagNameRaw.substring(1) : tagNameRaw;
+              const tagName = tagNameRaw && tagNameRaw.toLowerCase().startsWith('v') ? tagNameRaw.substring(1) : tagNameRaw;
               return tagName;
             } else {
               console.log('Fetching release');
               let { data } = await github.rest.repos.getLatestRelease({ owner, repo });
-              const tagName = data.tag_name.startsWith('v') ? data.tag_name.substring(1) : data.tag_name;
+              const tagName = data.tag_name.toLowerCase().startsWith('v') ? data.tag_name.substring(1) : data.tag_name;
               return tagName;
             } 
           } catch (error) {
